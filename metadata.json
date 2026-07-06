@@ -1,0 +1,8 @@
+{
+  "name": "Loreflow Mobile",
+  "description": "Loreflow Writer 手机移动端适配版，支持故事大纲、正文撰写、世界设定管理（角色、场景、道具、势力）、故事时间线及 AI 创作辅助等全方位创作功能。",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
