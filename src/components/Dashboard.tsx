@@ -146,21 +146,31 @@ export default function Dashboard({
         </div>
 
         <div className="grid grid-cols-1 gap-4">
-          {projects.map((project) => {
-            const isActive = project.id === activeProjectId;
-            const percentage = Math.min(100, Math.round((project.wordCount / project.targetWords) * 100));
-            
-            return (
-              <motion.div
-                key={project.id}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => onSelectProject(project.id)}
-                className={`relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer ${
-                  isActive 
-                    ? "bg-white border-2 border-indigo-600 shadow-[0_12px_24px_rgba(99,102,241,0.06)]" 
-                    : "bg-white border-slate-200/80 hover:border-slate-300 shadow-[0_2px_8px_rgba(0,0,0,0.01)] hover:shadow-md"
-                }`}
-              >
+          <AnimatePresence mode="popLayout">
+            {projects.map((project, idx) => {
+              const isActive = project.id === activeProjectId;
+              const percentage = Math.min(100, Math.round((project.wordCount / project.targetWords) * 100));
+              
+              return (
+                <motion.div
+                  key={project.id}
+                  layout
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ 
+                    duration: 0.25, 
+                    ease: [0.16, 1, 0.3, 1]
+                  }}
+                  whileHover={{ y: -3, scale: 1.005, transition: { duration: 0.15 } }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={() => onSelectProject(project.id)}
+                  className={`relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer ${
+                    isActive 
+                      ? "bg-white border-2 border-indigo-600 shadow-[0_12px_24px_rgba(99,102,241,0.06)] animate-none" 
+                      : "bg-white border-slate-200/80 hover:border-slate-300 shadow-[0_2px_8px_rgba(0,0,0,0.01)] hover:shadow-md"
+                  }`}
+                >
                 <div className="flex p-4 gap-4">
                   {/* Book Cover */}
                   <div className={`w-20 h-28 rounded-lg bg-gradient-to-b ${project.coverColor} flex flex-col justify-between p-2 shadow-md relative shrink-0 border border-white/5`}>
@@ -219,6 +229,7 @@ export default function Dashboard({
               </motion.div>
             );
           })}
+          </AnimatePresence>
         </div>
       </div>
 
@@ -248,11 +259,17 @@ export default function Dashboard({
       {/* Add Project Modal */}
       <AnimatePresence>
         {showAddModal && (
-          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4"
+          >
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
+              initial={{ scale: 0.95, y: 15, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 15, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 350 }}
               className="bg-white border border-slate-200 w-full max-w-sm rounded-2xl overflow-hidden shadow-xl flex flex-col max-h-[85vh]"
             >
               <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
@@ -355,7 +372,7 @@ export default function Dashboard({
                 </button>
               </form>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

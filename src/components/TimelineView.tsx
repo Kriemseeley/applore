@@ -214,11 +214,17 @@ export default function TimelineView({
       {/* Add Timeline Event Modal */}
       <AnimatePresence>
         {showAddModal && (
-          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4"
+          >
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
+              initial={{ scale: 0.95, y: 15, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 15, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 350 }}
               className="bg-white border border-slate-200 w-full max-w-sm rounded-2xl overflow-hidden shadow-xl flex flex-col max-h-[80vh]"
             >
               <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
@@ -313,7 +319,7 @@ export default function TimelineView({
                 </button>
               </form>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

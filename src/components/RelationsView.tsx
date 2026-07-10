@@ -98,12 +98,19 @@ export default function RelationsView({
           return (
             <motion.div
               key={rel.targetId}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: idx * 0.1, type: "spring" }}
-              style={{ transform: `translate(${x}px, ${y}px)` }}
+              initial={{ x: 0, y: 0, scale: 0, opacity: 0 }}
+              animate={{ x, y, scale: 1, opacity: 1 }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 140, 
+                damping: 18, 
+                mass: 1,
+                delay: idx * 0.04 
+              }}
+              whileHover={{ scale: 1.15, zIndex: 30 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setFocusId(rel.targetId)}
-              className="absolute group z-10 cursor-pointer"
+              className="absolute group z-20 cursor-pointer"
             >
               {/* Outer item circle avatar with badge status */}
               <div className="relative flex flex-col items-center">
@@ -129,14 +136,20 @@ export default function RelationsView({
         })}
 
         {/* Central Focus Node */}
-        <div className="relative flex flex-col items-center z-10 bg-white p-2.5 rounded-full border-4 border-pink-100 shadow-xl">
+        <motion.div
+          key={focusCharacter.id}
+          initial={{ scale: 0.85, opacity: 0.5 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 220, damping: 16 }}
+          className="relative flex flex-col items-center z-10 bg-white p-2.5 rounded-full border-4 border-pink-100 shadow-xl"
+        >
           <div className={`w-14 h-14 rounded-full ${focusCharacter.avatar} flex items-center justify-center font-bold text-sm shadow-md`}>
             {focusCharacter.name.charAt(0)}
           </div>
           <div className="absolute -bottom-6 bg-pink-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wide shadow-sm whitespace-nowrap">
             {focusCharacter.name.split(" (")[0]}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Relations List Grid */}
@@ -226,11 +239,17 @@ export default function RelationsView({
       {/* Add relationship Modal */}
       <AnimatePresence>
         {showAddModal && (
-          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4"
+          >
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
+              initial={{ scale: 0.95, y: 15, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 15, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 350 }}
               className="bg-white border border-slate-200 w-full max-w-sm rounded-2xl overflow-hidden shadow-xl flex flex-col max-h-[80vh]"
             >
               <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
@@ -304,7 +323,7 @@ export default function RelationsView({
                 </button>
               </form>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

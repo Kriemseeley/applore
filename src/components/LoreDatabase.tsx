@@ -324,7 +324,12 @@ export default function LoreDatabase({
       {/* Slide-up Detail Drawer */}
       <AnimatePresence>
         {selectedItem && activeDetails && (
-          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 flex items-end justify-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 flex items-end justify-center"
+          >
             {/* Click backdrop to close */}
             <div className="absolute inset-0" onClick={() => setSelectedItem(null)} />
 
@@ -332,7 +337,7 @@ export default function LoreDatabase({
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              transition={{ type: "spring", damping: 25, stiffness: 220 }}
               className="relative w-full max-w-md bg-white border-t border-slate-200 rounded-t-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh] z-10"
             >
               {/* Drag Handle */}
@@ -537,18 +542,24 @@ export default function LoreDatabase({
                 </button>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
       {/* Add New Lore Entry Dialog */}
       <AnimatePresence>
         {showAddModal && (
-          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4"
+          >
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
+              initial={{ scale: 0.95, y: 15, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 15, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 350 }}
               className="bg-white border border-slate-200 w-full max-w-sm rounded-2xl overflow-hidden shadow-xl flex flex-col max-h-[80vh]"
             >
               <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
@@ -629,7 +640,7 @@ export default function LoreDatabase({
                 </button>
               </form>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
